@@ -49,7 +49,7 @@ static void adjustCapacity(Table * table, int capacity) {
         entries[i].value = NIL_VAL;
     }
     table->count = 0;
-    for (int i = 0; i < capacity; ++i) {
+    for (int i = 0; i < table->capacity; i++) {
         Entry * entry = &table->entries[i];
         if (entry->key == NULL) continue;
 
@@ -58,7 +58,7 @@ static void adjustCapacity(Table * table, int capacity) {
         dest->key = entry->key;
         table->count++;
     }
-    FREE_ARRAY(Entry, &table->entries, table->capacity);
+    FREE_ARRAY(Entry, table->entries, table->capacity);
     table->entries = entries;
     table->capacity = capacity;
 }
