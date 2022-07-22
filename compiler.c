@@ -214,6 +214,7 @@ static int resolveLocal(Compiler * compiler, Token * name) {
             return i;
         }
     }
+    return -1;
 }
 
 static void addLocal(Token name) {
