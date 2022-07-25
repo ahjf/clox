@@ -110,7 +110,6 @@ static InterpretResult run() {
                 push(constant);
                 break;
             }
-
             case OP_NIL:
                 push(NIL_VAL);
                 break;
@@ -164,7 +163,6 @@ static InterpretResult run() {
                 push(BOOL_VAL(valuesEqual(a, b)));
                 break;
             }
-
             case OP_GREATER:
                 BINARY_OP(BOOL_VAL, >);
                 break;
@@ -197,7 +195,6 @@ static InterpretResult run() {
                 }
                 push(NUMBER_VAL(-AS_NUMBER(pop())));
                 break;
-
             case OP_PRINT: {
                 printValue(pop());
                 printf("\n");
@@ -211,6 +208,11 @@ static InterpretResult run() {
             case OP_JUMP_IF_FALSE: {
                 uint16_t offset = READ_SHORT();
                 if (isFalsey(peek(0))) vm.ip += offset;
+                break;
+            }
+            case OP_LOOP: {
+                uint16_t offset = READ_SHORT();
+                vm.ip -= offset;
                 break;
             }
             case OP_RETURN:{
