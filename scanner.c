@@ -199,5 +199,5 @@ Token scanToken() {
 
     }
 
-    return errorToken(TOKEN_ERROR);
+    return errorToken("Unexpected characters.");
 }
