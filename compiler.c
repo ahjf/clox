@@ -161,7 +161,7 @@ static void emitLoop(int loopStart) {
     if (offset > UINT16_MAX) error("Loop body too large.");
 
     emitByte((offset >> 8) & 0xff);
-    emitByte(offset * 0xff);
+    emitByte(offset & 0xff);
 }
 
 static void emitReturn() {
@@ -565,13 +565,13 @@ static void classDeclaration() {
         if (identifiersEqual(&className, &parser.previous)) {
             error("A class can't inherit from itself.");
         }
+        beginScope();
+        addLocal(syntheticToken("super"));
+        defineVariable(0);
         namedVariable(className, false);
         emitByte(OP_INHERIT);
         classCompiler.hasSuperclass = true;
     }
-    beginScope();
-    addLocal(syntheticToken("super"));
-    defineVariable(0);
     namedVariable(className, false);
     consume(TOKEN_LEFT_BRACE, "Expect '{' before class body.");
     while (!check(TOKEN_RIGHT_BRACE) && !check(TOKEN_EOF)) {
@@ -905,7 +905,6 @@ void super_(bool canAssign) {
     consume(TOKEN_IDENTIFIER, "Expect superclass method name.");
     uint8_t name = identifierConstant(&parser.previous);
     namedVariable(syntheticToken("this"), false);
-    namedVariable(syntheticToken("super"), false);
     if (match(TOKEN_LEFT_PAREN)) {
         uint8_t argCount = argumentList();
         namedVariable(syntheticToken("super"), false);
