@@ -12,10 +12,8 @@
 
 #ifdef DEBUG_PRINT_CODE
 #include "debug.h"
-#include "memory.h"
-
 #endif
-
+#include "memory.h"
 
 typedef struct {
     Token current;
